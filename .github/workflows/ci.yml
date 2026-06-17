@@ -35,14 +35,14 @@ jobs:
       - name: 压缩镜像
         run: gzip -f /tmp/simple-web.tar
       - name: 上传镜像 artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: docker-image
           path: /tmp/simple-web.tar.gz
           retention-days: 1
 
   deploy:
-    name: "部署至 ECS"
+    name: "部署ECS"
     needs: build
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main'
@@ -51,7 +51,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: 下载镜像 artifact
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         with:
           name: docker-image
           path: ./
@@ -105,7 +105,7 @@ jobs:
       - name: 汇总
         run: |
           echo "========================================="
-          echo "  CI/CD 流水线完成"
+          echo "  CI/CD流水线完成"
           echo "========================================="
           echo " 验证测试 : ${{ needs.validate.result }}"
           echo " 构建镜像 : ${{ needs.build.result }}"
